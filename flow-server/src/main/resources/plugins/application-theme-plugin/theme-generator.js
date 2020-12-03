@@ -44,9 +44,10 @@ export const injectGlobalCss = (css, target) => {
  *
  * @param {string} themeFolder folder of the theme
  * @param {string} themeName name of the handled theme
+ * @param {json} themeProperties theme.json contents
  * @returns {string} theme file content
  */
-function generateThemeFile(themeFolder, themeName) {
+function generateThemeFile(themeFolder, themeName, themeProperties) {
   const globalFiles = glob.sync('*.css', {
     cwd: themeFolder,
     nodir: true,
@@ -78,6 +79,15 @@ function generateThemeFile(themeFolder, themeName) {
     globalCssCode.push(`injectGlobalCss(${variable}.toString(), target);\n`);
   });
 
+  let i = 0;
+  if (themeProperties.documentCss) {
+    themeProperties.documentCss.forEach((cssImport) => {
+      const variable = 'module' + i++;
+      imports.push(`import ${variable} from '${cssImport}';\n`);
+      globalCssCode.push(`    injectGlobalCss(${variable}.toString(), target);\n`);
+      globalCssCode.push(`    injectGlobalCss(${variable}.toString(), document);\n`);
+    });
+  }
   componentsFiles.forEach((componentCss) => {
     const filename = path.basename(componentCss);
     const tag = filename.replace('.css', '');

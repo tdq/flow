@@ -26,6 +26,7 @@ import com.vaadin.flow.testutil.ChromeBrowserTest;
 import com.vaadin.testbench.TestBenchElement;
 
 import static com.vaadin.flow.uitest.ui.theme.ThemeView.BUTTERFLY_ID;
+import static com.vaadin.flow.uitest.ui.theme.ThemeView.HAND_ID;
 import static com.vaadin.flow.uitest.ui.theme.ThemeView.MY_LIT_ID;
 import static com.vaadin.flow.uitest.ui.theme.ThemeView.MY_POLYMER_ID;
 import static com.vaadin.flow.uitest.ui.theme.ThemeView.SNOWFLAKE_ID;
@@ -151,6 +152,25 @@ public class ThemeIT extends ChromeBrowserTest {
         getDriver().get(getRootURL() + "/octopuss.jpg");
         Assert.assertFalse("root resource should be served",
             driver.getPageSource().contains("HTTP ERROR 404 Not Found"));
+    }
+
+    @Test
+    public void documentCssFonts_fontsAreAppliedAndAvailable() {
+        open();
+        checkLogsForErrors();
+
+        final SpanElement handElement = $(SpanElement.class).id(HAND_ID);
+        Assert.assertEquals("Font family faulty", "\"Font Awesome 5 Free\"",
+            handElement.getCssValue("font-family"));
+        Assert.assertEquals("Font weight faulty", "900",
+            handElement.getCssValue("font-weight"));
+        Assert.assertEquals("display value faulty", "inline-block",
+            handElement.getCssValue("display"));
+
+        getDriver().get(getRootURL() + "/path/VAADIN/static/fa-solid-900.woff2");
+        Assert.assertFalse("Font resource should be available",
+            driver.getPageSource().contains("HTTP ERROR 404 Not Found"));
+
     }
 
     @Override

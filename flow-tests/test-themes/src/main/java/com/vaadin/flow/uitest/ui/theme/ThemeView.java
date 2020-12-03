@@ -31,6 +31,7 @@ public class ThemeView extends Div {
     public static final String BUTTERFLY_ID = "butterfly";
     public static final String OCTOPUSS_ID = "octopuss";
     public static final String SUB_COMPONENT_ID = "sub-component";
+    public static final String HAND_ID = "sparkle-hand";
 
     public ThemeView() {
         final Span textSpan = new Span("This is the theme test view");
@@ -50,7 +51,11 @@ public class ThemeView extends Div {
         snowFlake.setHeight("1em");
         snowFlake.setId(SNOWFLAKE_ID);
 
-        add(textSpan, snowFlake, subCss, butterfly, octopuss);
+        Span hand = new Span();
+        hand.setId(HAND_ID);
+        hand.addClassNames("fas", "fa-hand-sparkles");
+
+        add(hand, textSpan, snowFlake, subCss, butterfly, octopuss);
 
         add(new Div());
         add(new MyPolymerField().withId(MY_POLYMER_ID));

@@ -207,13 +207,7 @@ module.exports = {
           loader: 'file-loader',
           options: {
             outputPath: 'static/',
-            name(resourcePath, resourceQuery) {
-              const urlResource = resourcePath.substring(frontendFolder.length);
-              if(urlResource.match(themePartRegex)){
-                return /^(\\|\/)theme\1[\s\S]*?\1(.*)/.exec(urlResource)[2].replace(/\\/, "/");
-              }
-              return '[path][name].[ext]';
-            }
+            name: '[path][name].[ext]'
           }
         }],
       },
